@@ -1,0 +1,24 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Show Search{% endblock %}
+{% block content %}
+<h3>Number of search results for "{{ search_term }}": {{ search_results|length }}</h3>
+<div class="row shows">
+   {%for shows in search_results %}
+   <div class="col-sm-4">
+      <div class="tile tile-show">
+         <a href="/artists/{{ shows.artist_id }}">
+            <img src="{{ shows.artist_image_link }}" alt="Artist Image">
+         </a>
+         <h4>{{ shows.start_time|datetime('full') }}</h4>
+         <h5>
+            <a href="/artists/{{ shows.artist_id }}">{{ shows.artist_name }}</a>
+         </h5>
+         <p>playing at</p>
+         <h5>
+            <a href="/venues/{{ shows.venue_id }}">{{ shows.venue_name }}</a>
+         </h5>
+      </div>
+   </div>
+   {% endfor %}
+</div>
+{% endblock %}
