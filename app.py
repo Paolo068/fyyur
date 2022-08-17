@@ -7,7 +7,6 @@ from sqlalchemy import or_
 from email.policy import default
 import json
 import sys
-from typing import final
 from unittest import result
 import babel
 import logging
