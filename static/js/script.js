@@ -5,12 +5,19 @@ window.parseISOString = function parseISOString(s) {
 
 // Confirm delete
 
-delBtn = document.querySelector('#to-delete')
-if (delBtn) {
-  delBtn.addEventListener('click', e => {
-    !confirm('Are you sure to delete?') ? e.preventDefault() : null
-  })
-}
+// delBtn = document.querySelector('#to-delete')
+// if (delBtn) {
+//   delBtn.addEventListener('click', e => {
+//     if (!confirm('Are you sure to delete?')) {
+//       e.preventDefault()
+//     }
+//     else {
+//       return null
+//     }
+//   })
+// }
+
+
 
 
 

@@ -1,5 +1,5 @@
 {% extends 'layouts/main.html' %}
-{% block title %}Venue Search{% endblock %}
+{% block title %}Venue Show{% endblock %}
 {% block content %}
 <div class="row">
    <div class="col-sm-6">
@@ -59,9 +59,10 @@
    </div>
 </div>
 <section>
-   <h2 class="monospace">{{ venue.upcoming_shows_count }} Upcoming {% if venue.upcoming_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+   {% set count = upcoming_shows | count %}
+   <h2 class="monospace">{{ count }} Upcoming {{ ('Show', 'Shows')[count > 1]}}</h2>
    <div class="row">
-      {%for show in venue.upcoming_shows %}
+      {%for show in upcoming_shows %}
       <div class="col-sm-4">
          <div class="tile tile-show">
             <img src="{{ show.artist_image_link }}" alt="Show Artist Image">
@@ -75,14 +76,15 @@
    </div>
 </section>
 <section>
-   <h2 class="monospace">{{ venue.past_shows_count }} Past {% if venue.past_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+   {% set count = past_shows | count %}
+   <h2 class="monospace">{{ count }} Past {{ ('Show', 'Shows')[count > 1]}}</h2>
    <div class="row">
-      {%for show in venue.past_shows %}
+      {%for show in past_shows %}   
       <div class="col-sm-4">
          <div class="tile tile-show">
-            <img src="{{ show.artist_image_link }}" alt="Show Artist Image">
+            <img src="{{ show.artists.image_link }}" alt="Show Artist Image">
             <h5>
-               <a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a>
+               <a href="/artists/{{ show.artist_id }}">{{ show.artists.name }}</a>
             </h5>
             <h6>{{ show.start_time|datetime('full') }}</h6>
          </div>
@@ -93,7 +95,7 @@
 <a href="/venues/{{ venue.id }}/edit" class="btn btn-primary btn-lg">
    Edit
 </a>
-<a href="/venues/{{ venue.id }}/delete" class="btn btn-danger btn-lg" id="to-delete">
+<a href="/venues/{{ venue.id }}/delete" onclick="return confirm('Are you sure to delete venue {{venue.name}}')" class="btn btn-danger btn-lg" id="to-delete">
    Delete
 </a>
 {% endblock %}

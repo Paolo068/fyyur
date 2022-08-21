@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import (
     StringField,
     SelectField,
@@ -12,21 +12,21 @@ from wtforms import (
 from wtforms.validators import DataRequired, AnyOf, URL, ValidationError
 
 
-def validate_us_phone(form, phone):
-    us_phone_num = "/^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$/"
-    match = re.search(us_phone_num, phone.data)
-    if not match:
-        raise ValidationError("Error, phone number must be in format xxx-xxx-xxxx")
+# def validate_us_phone(form, phone):
+#     us_phone_num = "/^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})$/"
+#     match = re.search(us_phone_num, phone.data)
+#     if not match:
+#         raise ValidationError("Error, phone number must be in format xxx-xxx-xxxx")
 
 
-def validate_fb_link(form, facebook_link):
-    fb_url = "^(:http:\/\/?(?:www.)?facebook.com\/\w'"
-    match = re.search(fb_url, facebook_link.data)
-    if not match:
-        raise ValidationError("Error, this is not a valid facebook url")
+# def validate_fb_link(form, facebook_link):
+#     fb_url = "^(:http:\/\/?(?:www.)?facebook.com\/\w'"
+#     match = re.search(fb_url, facebook_link.data)
+#     if not match:
+#         raise ValidationError("Error, this is not a valid facebook url")
 
 
-class ShowForm(Form):
+class ShowForm(FlaskForm):
     artist_id = StringField("artist_id")
     venue_id = StringField("venue_id")
     start_time = DateTimeField(
@@ -34,7 +34,7 @@ class ShowForm(Form):
     )
 
 
-class VenueForm(Form):
+class VenueForm(FlaskForm):
     name = StringField("name", validators=[DataRequired()])
     city = StringField("city", validators=[DataRequired()])
     state = SelectField(
@@ -96,7 +96,7 @@ class VenueForm(Form):
     )
     address = StringField("address", validators=[DataRequired()])
     phone = TelField(
-        "phone", validators=[DataRequired(), validate_us_phone], default="(+1) "
+        "phone", validators=[DataRequired()], default="(+1) "
     )
     image_link = StringField("image_link")
     genres = SelectMultipleField(
@@ -125,7 +125,7 @@ class VenueForm(Form):
             ("Other", "Other"),
         ],
     )
-    facebook_link = StringField("facebook_link", validators=[URL(), validate_fb_link])
+    facebook_link = StringField("facebook_link", validators=[URL()])
     website_link = StringField("website_link")
 
     seeking_talent = BooleanField("seeking_talent")
@@ -133,7 +133,7 @@ class VenueForm(Form):
     seeking_description = StringField("seeking_description")
 
 
-class ArtistForm(Form):
+class ArtistForm(FlaskForm):
     name = StringField("name", validators=[DataRequired()])
     city = StringField("city", validators=[DataRequired()])
     state = SelectField(
@@ -194,7 +194,7 @@ class ArtistForm(Form):
         ],
     )
     phone = TelField(
-        "phone", validators=[DataRequired(), validate_us_phone], default="(+1) "
+        "phone", validators=[DataRequired()], default="(+1) "
     )
     image_link = StringField("image_link")
     genres = SelectMultipleField(
@@ -222,7 +222,7 @@ class ArtistForm(Form):
             ("Other", "Other"),
         ],
     )
-    facebook_link = StringField("facebook_link", validators=[URL(), validate_fb_link])
+    facebook_link = StringField("facebook_link", validators=[URL()])
 
     website_link = StringField("website_link")
 

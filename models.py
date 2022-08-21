@@ -1,3 +1,5 @@
+from distutils.ccompiler import show_compilers
+from distutils.command.bdist import show_formats
 from config import db
 from sqlalchemy import ARRAY, String, Integer
 
@@ -16,7 +18,7 @@ class Venue(db.Model):
     website_link = db.Column(db.String(120))
     seeking_talent = db.Column(db.Boolean(), default=False)
     seeking_description = db.Column(db.String(150))
-    # artist = db.relationship("Artist", secondary="shows", backref="artists")
+    shows = db.relationship("Show", backref="venues", lazy=True)
 
 
 class Artist(db.Model):
@@ -32,17 +34,13 @@ class Artist(db.Model):
     website_link = db.Column(db.String(120))
     seeking_venue = db.Column(db.Boolean(), default=False)
     seeking_description = db.Column(db.String(150))
-    venues = db.relationship("Venue", secondary="shows", backref="artists")
+    shows = db.relationship("Show", backref="artists", lazy=True)
 
 
 class Show(db.Model):
     __tablename__ = "shows"
     id = db.Column(db.Integer, primary_key=True)
     artist_id = db.Column(db.Integer, db.ForeignKey("artists.id"))
-    artist_name = db.Column(db.String(120))
-    artist_image_link = db.Column(db.String(150))
     venue_id = db.Column(db.Integer, db.ForeignKey("venues.id"))
-    venue_name = db.Column(db.String(120))
     start_time = db.Column(db.String(120))
-    upcoming_shows = db.Column(ARRAY(Integer))
-    past_shows = db.Column(ARRAY(Integer))
+    

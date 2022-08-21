@@ -2,13 +2,8 @@
 {% block title %}Edit Venue{% endblock %}
 {% block content %}
 <div class="form-wrapper">
-   <form
-      class="form "
-      id="edit-
-      venue-form"
-      method="post"
-      action="/venues/{{venue.id}}/edit"
-   >
+   <form class="form" method="post" action="/venues/{{venue.id}}/edit">
+      {{form.csrf_token}}
       <h3 class="form-heading">
          Edit venue
          <em>{{ venue.name }}</em>

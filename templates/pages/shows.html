@@ -2,19 +2,19 @@
 {% block title %}Fyyur | Shows{% endblock %}
 {% block content %}
 <div class="row shows">
-   {%for shows in data %}
+   {%for show in shows %}
    <div class="col-sm-4">
       <div class="tile tile-show">
-         <a href="/artists/{{ shows.artist_id }}">
-            <img src="{{ shows.artist_image_link }}" alt="Artist Image">
+         <a href="/artists/{{ show.artist_id }}">
+            <img src="{{ show.artists.image_link }}" alt="Artist Image">
          </a>
-         <h4>{{ shows.start_time|datetime('full') }}</h4>
+         <h4>{{ show.start_time|datetime('full') }}</h4>
          <h5>
-            <a href="/artists/{{ shows.artist_id }}">{{ shows.artist_name }}</a>
+            <a href="/artists/{{ show.artist_id }}">{{ show.artists.name }}</a>
          </h5>
          <p>playing at</p>
          <h5>
-            <a href="/venues/{{ shows.venue_id }}">{{ shows.venue_name }}</a>
+            <a href="/venues/{{ show.venue_id }}">{{ show.venues.name }}</a>
          </h5>
       </div>
    </div>
