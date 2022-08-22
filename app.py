@@ -125,7 +125,7 @@ def create_venue_submission():
 @app.route("/venues/<int:venue_id>")
 def show_venue(venue_id):
     venue = Venue.query.get_or_404(venue_id)
-    current_time = format_datetime(str(datetime.utcnow()))
+    current_time = str(datetime.utcnow())
 
     upcoming_shows = (
         Show.query.join(Venue)
@@ -330,7 +330,7 @@ def create_artist_submission():
 @app.route("/artists/<int:artist_id>")
 def show_artist(artist_id):
     artist = Artist.query.get_or_404(artist_id)
-    current_time = format_datetime(str(datetime.utcnow()))
+    current_time = str(datetime.utcnow())
 
     upcoming_shows = (
         Show.query.join(Artist)
@@ -344,13 +344,6 @@ def show_artist(artist_id):
         .all()
     )
 
-    # upcoming_shows = Show.query.filter(
-    #     Show.artist_id == artist_id, Show.start_time >= current_time
-    # ).all()
-
-    # past_shows = Show.query.filter(
-    #     Show.artist_id == artist_id, Show.start_time < current_time
-    # ).all()
     return render_template(
         "pages/show_artist.html",
         artist=artist,
@@ -506,10 +499,10 @@ def create_show_submission():
         db.session.commit()
 
         flash("The show was successfully listed!")
-    except:
+    except Exception as e:
         db.session.rollback()
         print(sys.exc_info())
-        flash("An error occured. The show could not be listed!")
+        flash({e}, ". The show could not be listed!")
 
     finally:
         db.session.close()
