@@ -73,7 +73,7 @@
 </section>
 <section>
    {% set count = past_shows | count %}
-   <h2 class="monospace">{{ count }} Past {% if artist.past_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+   <h2 class="monospace">{{ count }} Past {{ ('Show', 'Shows')[count > 1]}}</h2>
    <div class="row">
       {%for show in past_shows %}
       <div class="col-sm-4">

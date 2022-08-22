@@ -127,12 +127,16 @@ def show_venue(venue_id):
     venue = Venue.query.get_or_404(venue_id)
     current_time = format_datetime(str(datetime.utcnow()))
 
-    upcoming_shows = Show.query.filter(
-        Show.venue_id == venue_id, Show.start_time >= current_time
-    ).all()
+    upcoming_shows = (
+        Show.query.join(Venue)
+        .filter(Show.venue_id == venue_id, Show.start_time > current_time)
+        .all()
+    )
 
-    past_shows = Show.query.filter(
-        Show.venue_id == venue_id, Show.start_time < current_time
+    past_shows = (
+        Show.query.join(Venue).filter(
+            Show.venue_id == venue_id, Show.start_time < current_time
+        )
     ).all()
 
     return render_template(
@@ -328,14 +332,25 @@ def show_artist(artist_id):
     artist = Artist.query.get_or_404(artist_id)
     current_time = format_datetime(str(datetime.utcnow()))
 
-    upcoming_shows = Show.query.filter(
-        Show.artist_id == artist_id, Show.start_time >= current_time
-    ).all()
+    upcoming_shows = (
+        Show.query.join(Artist)
+        .filter(Show.artist_id == artist_id, Show.start_time > current_time)
+        .all()
+    )
 
-    past_shows = Show.query.filter(
-        Show.artist_id == artist_id, Show.start_time < current_time
-    ).all()
+    past_shows = (
+        Show.query.join(Artist)
+        .filter(Show.artist_id == artist_id, Show.start_time < current_time)
+        .all()
+    )
 
+    # upcoming_shows = Show.query.filter(
+    #     Show.artist_id == artist_id, Show.start_time >= current_time
+    # ).all()
+
+    # past_shows = Show.query.filter(
+    #     Show.artist_id == artist_id, Show.start_time < current_time
+    # ).all()
     return render_template(
         "pages/show_artist.html",
         artist=artist,
@@ -552,7 +567,7 @@ if not app.debug:
 
 # Default port:
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True, use_reloader=True)
 
 # Or specify port manually:
 """
